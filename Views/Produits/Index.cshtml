@@ -1,0 +1,133 @@
+﻿@model IEnumerable<PanierMVC.Models.Produit>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    /* Classe CSS pour définir la taille des images */
+    .product-image {
+        width: 150px; /* Ajustez la largeur selon vos besoins */
+        height: 150px; /* Ajustez la hauteur selon vos besoins */
+        object-fit: cover; /* Échelle l'image pour remplir la zone définie */
+    }
+
+    /* Style de la barre latérale */
+    .sidebar {
+        background-color: #f0f0f0;
+        padding: 15px;
+    }
+</style>
+
+
+<script>
+    // Code JavaScript pour gérer l'ajout au panier
+    document.addEventListener("DOMContentLoaded", function () {
+        const addToCartButtons = document.querySelectorAll(".add-to-cart");
+
+        addToCartButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const productId = this.getAttribute("data-product-id");
+                const productImage=this.getAttribute("data-product-image")
+                const productName = this.getAttribute("data-product-name");
+                const productPrice = this.getAttribute("data-product-price");
+                const productType = this.getAttribute("data-product-type");
+
+                const product = {
+                    id: productId,
+                    image: productImage,
+                    name: productName,
+                    price: productPrice,
+                    type: productType,
+                };
+
+                // Récupérez le panier depuis le stockage local
+                const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+                // Ajoutez le produit au panier
+                cart.push(product);
+
+                // Enregistrez le panier mis à jour dans le stockage local
+                localStorage.setItem("cart", JSON.stringify(cart));
+
+                // Affichez un message ou effectuez d'autres actions si nécessaire
+                alert("Le produit a été ajouté au panier.");
+            });
+        });
+    });
+</script>
+
+
+<h1>Nos produits</h1>
+
+<!--  <a href="../Users/login" class="btn btn-info" style="margin-left: 10px;">Log in</a> -->|
+
+
+<div class="row">
+    <!--
+    <p>
+                <a asp-action="Create">Create New</a>
+            </p>
+        -->     
+      
+
+            <!-- bare de recherche-->
+
+            <div class="col-md-3 sidebar">
+        <form asp-action="Index" method="get" enctype="multipart/form-Data">
+                    <!-- Vos éléments de filtrage ici -->
+                    <h5>Catégories</h5>
+                    <select name="Category">
+                        <!-- Options de catégorie -->
+                        <option Value="All">Toutes les catégories</option>
+                        <option Value="Shampoing">Shampoing</option>
+                        <option Value="Gommage">Gommage</option>
+                        <option Value="Crème gommage">Crème gommage</option>
+                        <option Value="Crème hydratant">Crème hydratant</option>
+                        <option Value="Créme">Crème</option>
+                    </select>
+
+                    <h5>Prix</h5>
+            <input name="MinPriceString" type="number" placeholder="Min" min="10" />
+            <input name ="MaxPriceString" type="number" placeholder="Max" max="3000" />
+
+            <button type="submit" value="Index"  class="btn btn-dark">Chercher</button>
+                </form>
+            </div>
+
+            <!-- Les produits-->
+            <div class="col-md-9">
+                <div class="row">
+
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card" style="width:290px;margin-right:20px;">
+                        <img src="@item.image" class="card-img-top product-image" alt="Image">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.nom</h5>
+                            <p class="card-text">Type: @item.type</p>
+                            <p class="card-text">Prix: @item.prix dh</p>
+                        </div>
+                        <div class="card-footer">
+                          <!--  <a asp-page="./Pages_produits/Details" asp-route-id="" class="btn btn-info">Details</a>
+                            <a asp-page="./Pages_produits/Details" asp-route-id="" class="btn btn-danger">Ajouter au panier</a>
+                                                                                    <a asp-action="Delete" asp-route-id=".id" class="btn btn-danger">Delete</a>
+                            -->
+
+                            <a asp-action="Details" asp-route-id="@item.id" class="btn" style="background-color:lightgray">Details</a> |
+                            <a asp-page="/Panier"
+                               asp-route-id="@item.id"
+                               class="btn btn-dark add-to-cart"
+                               data-product-id="@item.id"
+                               data-product-name="@item.nom"
+                               data-product-type="@item.type"
+                               data-product-price="@item.prix"
+                               data-product-image="@item.image">Ajouter au panier</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

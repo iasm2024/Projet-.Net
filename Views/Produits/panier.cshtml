@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Panier";
+}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Récupérez le panier depuis le local storage
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        // Sélectionnez l'élément HTML où vous souhaitez afficher les produits du panier
+        const cartList = document.getElementById("cart-list");
+
+        // Parcourez les produits du panier et affichez-les sous forme de cards
+        cart.forEach(product => {
+            const productCard = document.createElement("div");
+           productCard.classList.add("card", "col-md-3", "mb-3");
+            productCard.innerHTML = `
+        <div class="card-body">
+                    <img src="${product.image}" class="card-img-top product-image" alt="Image">
+
+                <h5 class="card-title">${product.name}</h5>
+                <p class="card-text">${product.type}</p>
+                <p class="card-text">${product.price} dh</p>
+        </div>
+        <div class="card-footer">
+            <a asp-action="Details" asp-route-id="${product.id}" class="btn" style="background-color: lightgray">Details</a> |
+        </div>
+    `;
+
+            cartList.appendChild(productCard);
+        });
+    });
+
+    function showDetails(productId) {
+        // Vous pouvez implémenter la logique pour afficher plus de détails du produit ici
+        // Par exemple, en redirigeant l'utilisateur vers la page des détails du produit.
+        // Utilisez productId pour identifier le produit sélectionné.
+        // window.location.href = "/Produits/Details/" + productId;
+    }
+</script>
+
+<h1>Mon Panier</h1>
+
+<div id="cart-list">
+    <!-- Les produits du panier seront affichés ici sous forme de cards par JavaScript -->
+</div>

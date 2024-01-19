@@ -1,0 +1,33 @@
+﻿@model PanierMVC.Models.User
+
+    
+@{
+    ViewData["Title"] = "login";
+}
+
+<div class="row" >
+    <div class="col-md-4" style="width:400px;height:500px;margin-left:400px;margin-top:90px;border-block-color:black;">
+
+    <form asp-controller="User" asp-action="Authenticate" method="post">
+
+        <div class="form-group">
+           <h1>Login</h1>      
+        </div> 
+        <div class="form-group">
+            <label asp-for="login"></label>
+            <input asp-for="login" class="form-control" />
+            <span asp-validation-for="login" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="password"></label>
+            <input asp-for="password" type="password" class="form-control" />
+            <span asp-validation-for="password" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-outline-dark" style="margin-top:20px;">Se connecter</button>
+    </form>
+    </div>
+
+</div>
+
